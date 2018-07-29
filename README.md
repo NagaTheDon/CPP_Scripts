@@ -15,3 +15,7 @@
 * It is simple. Find the total number of each denomination needed to achieve the total amount. 
 
 * If it is not possible, the program should print **IMPOSSIBLE**. 
+
+* The program should priortise keeping/saving the higher denominations than lower denominations. 
+
+* The denominations will be / should be entered in descending order when asked. 
