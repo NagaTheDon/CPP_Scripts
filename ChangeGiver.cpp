@@ -29,14 +29,14 @@ public:
 		mRemainder = 0;
 	}
 
-  void SetValueToZero() {
-    mValue = 0;
-  }
+	void SetValueToZero() {
+	mValue = 0;
+	}
 
-  void DecrementNumber() 
-  {
-    mNumber--;
-  }
+	void DecrementNumber() 
+	{
+	mNumber--;
+	}
 
 	void ContainerCalculation(int aGivenValue) {
 		mValue += aGivenValue;
