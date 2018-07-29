@@ -30,6 +30,11 @@ public:
 		mRemainder = 0;
 	}
 
+  void DecrementNumber() 
+  {
+    mNumber--;
+  }
+
 	void ContainerCalculation(int aGivenValue) {
 		mValue = aGivenValue;
 		mNumber = mValue / mDenomination;
@@ -152,23 +157,13 @@ int main()
  	{
  		cout << "Entered Here!" << endl;
  		for(int i = FindStartIndex(ContainerObject, mNumOfDenominations); 
- 			i < mNumOfDenominations; i++)
+ 			i < mNumOfDenominations-1; i++)
  		{
  			cout << "i: " << i << endl;
-  			TransferValueToNextContainer(i, ContainerObject);
+  	  TransferValueToNextContainer(i,ContainerObject);
  		}
  	}
 
  	cout << endl << "Exited the While loop! " << endl;
-
- 	// if(mImpossible)
- 	// {
- 	// 	cout << "It is impossible!" << endl;
- 	// }
- 	// else
- 	// {
- 	// 	cout << "I think it is done! Just Check now! Debug!" << endl;
- 	// }
-
 	return 0;
 }
