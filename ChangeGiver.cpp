@@ -26,9 +26,12 @@ public:
 	}
 
 	void SetRemainderToZero(void) {
-		// cout << "Demonination :" << mDenomination << " has been set to zero!" << endl;
 		mRemainder = 0;
 	}
+
+  void SetValueToZero() {
+    mValue = 0;
+  }
 
   void DecrementNumber() 
   {
@@ -36,17 +39,23 @@ public:
   }
 
 	void ContainerCalculation(int aGivenValue) {
-		mValue = aGivenValue;
+		mValue += aGivenValue;
 		mNumber = mValue / mDenomination;
 		mRemainder = mValue % mDenomination;
 	}
 
-	void ReportStatus(void) {
+	void ReportStatus(void) //Just for debugging purposes
+	{
 		cout << "Denomination: " <<mDenomination << endl;
 		cout << "Value Given: " << mValue << endl;
 		cout << "Number: " << mNumber << endl;
 		cout << "mRemainder: " << mRemainder << endl;
 		cout << "=============" << endl;
+	}
+
+	void ReportNumber(void)
+	{
+		cout << "Number of " << mDenomination << "s : " << mNumber << endl;
 	}
 
 private:
@@ -57,28 +66,37 @@ private:
 
 };
 
-void TransferValueToNextContainer(int aStartIndex, Container** ContainerObject){
-		// cout << "Index received at TVTNC: " << aStartIndex << endl;
+void TransferValueToNextContainer(int aStartIndex, Container** ContainerObject, int mNumberOfDenominations){
 		int mTakenValue = ContainerObject[aStartIndex]->GetRemainder();
-		ContainerObject[aStartIndex]->SetRemainderToZero();
+ 		ContainerObject[aStartIndex]->SetRemainderToZero();
 		ContainerObject[aStartIndex+1]->ContainerCalculation(mTakenValue);
+
+    if(mNumberOfDenominations-1 > aStartIndex )
+    {
+      ContainerObject[aStartIndex]->SetValueToZero();
+    }
+}
+
+void TransferTopDenomToBotDenom(int aStartIndex, Container** ContainerObject)
+{
+  ContainerObject[aStartIndex]->DecrementNumber();
+  ContainerObject[aStartIndex+1]->ContainerCalculation(ContainerObject[aStartIndex]->GetDenomination());
 }
 
 bool IsItDone(Container** ContainerObject, int mNumOfDenominations, bool& mImpossible)
 {
-	cout << "Is it Done? " << endl;
 
 	if(ContainerObject[mNumOfDenominations - 1]->GetRemainder() == 0)
-	{
-				return true;
+	{ 
+		return true; 
 	}
 
-	else 
+		else 
 	{
 		mImpossible = true;
 		for(int i = mNumOfDenominations-2; i >=0; i--)
 		{
-			if(ContainerObject[i]->GetValue() != 0)
+			if(ContainerObject[i]->GetNumber() != 0)
 			{
 				mImpossible = false;
 				return false;
@@ -103,10 +121,9 @@ int FindStartIndex(Container** ContainerObject, int aNumberOfDenominations)
 	int mStartIndex = 255; // Because ZERO could be an index of a container
 	for(int i = mBottomIndex; i >= 0; i--)
 	{
-		if(ContainerObject[i]->GetValue() > 0)
+		if(ContainerObject[i]->GetNumber() > 0)
 		{
 			mStartIndex = i; 
-			
 			break;
 		}
 	}
@@ -142,28 +159,55 @@ int main()
  	ContainerObject[0]->ContainerCalculation(mTotalAmount);
 
  	for(int i = 0; i < mNumOfDenominations-1; i++) {
- 		TransferValueToNextContainer(i, ContainerObject);
+ 		TransferValueToNextContainer(i, ContainerObject, mNumOfDenominations);
  	}
 
- 	// for(int i = 0; i < mNumOfDenominations; i++) {
- 	// 	ContainerObject[i]->ReportStatus();
- 	// }
-
  	bool mImpossible = false; 
-
- 	// cout << ""
+	bool mEarlyFinish = false;
 
  	while(IsItDone(ContainerObject, mNumOfDenominations, mImpossible) == false)
  	{
- 		cout << "Entered Here!" << endl;
- 		for(int i = FindStartIndex(ContainerObject, mNumOfDenominations); 
- 			i < mNumOfDenominations-1; i++)
+
+    	int mStartIndex = FindStartIndex(ContainerObject, mNumOfDenominations); 
+
+ 		for(int i = mStartIndex; i < mNumOfDenominations-1; i++)
  		{
- 			cout << "i: " << i << endl;
-  	  TransferValueToNextContainer(i,ContainerObject);
+	       if(i == mStartIndex)
+	       {
+	         TransferTopDenomToBotDenom(i, ContainerObject);
+	       }
+
+	       else
+	       {
+	 	        TransferValueToNextContainer(i,ContainerObject, mNumOfDenominations);
+				
+				if(IsItDone(ContainerObject, mNumOfDenominations, mImpossible) == true)
+				{
+					mEarlyFinish = true;
+					break;
+				} 
+	       }
+	   
+		   if(mEarlyFinish)
+		   {
+			   break;
+		   }
+ 
  		}
  	}
 
- 	cout << endl << "Exited the While loop! " << endl;
+   if(mImpossible)
+   {
+     cout << "It is impossible!" << endl;
+   }
+
+   else
+   {
+     for(int i = 0; i < mNumOfDenominations; i++)
+     {
+       ContainerObject[i]->ReportNumber();
+     }
+   }
+
 	return 0;
 }
