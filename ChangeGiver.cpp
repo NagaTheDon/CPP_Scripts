@@ -84,6 +84,11 @@ bool IsItDone(Container** ContainerObject, int mNumOfDenominations, bool& mImpos
 		{
 			return true;
 		}
+
+    else
+    {
+      return false;
+    }
 	}
 }
 
@@ -96,10 +101,11 @@ int FindStartIndex(Container** ContainerObject, int aNumberOfDenominations)
 		if(ContainerObject[i]->GetValue() > 0)
 		{
 			mStartIndex = i; 
-			return mStartIndex;
+			
 			break;
 		}
 	}
+  return mStartIndex;
 }
 
 int main()
