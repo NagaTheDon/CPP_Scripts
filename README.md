@@ -19,3 +19,7 @@
 * The program should priortise keeping/saving the higher denominations than lower denominations. 
 
 * The denominations will be / should be entered in descending order when asked. 
+
+**TODO**:
+
+1. Find all the suitable combinations of denominations that give us sum equal to the total amount
