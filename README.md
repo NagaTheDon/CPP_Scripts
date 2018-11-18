@@ -31,9 +31,9 @@
 
 **Outputs**
 * A string of the number seperated with commas. 
-If the number is `1234567` and is*Indian*, the output should be :
+If the number is `1234567` and is *EU*, the output should be :
 `1,234,567`
 
-or if it is *EU*:
+or if it is *Indian*:
 `12,34,567`
 
